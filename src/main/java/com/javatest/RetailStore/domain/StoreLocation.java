@@ -1,23 +1,20 @@
 package  com.javatest.RetailStore.domain;
 
-import java.util.Map;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class StoreLocation {
 
     private String shopName ;
-    private Map<String, ShopAddress> shopAddress;
-    private String shopLatitude ;
-    private String shopLongitude;
-}
-@Getter
-@Setter
-class ShopAddress{
-    private int number;
-    private int postalCode;
+    private ShopAddress shopAddress;
+    private Double shopLatitude ;
+    private Double shopLongitude;
 }

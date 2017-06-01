@@ -1,37 +1,35 @@
 package com.javatest.RetailStore.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.javatest.RetailStore.domain.MapGeoCodeResponse;
+import com.javatest.RetailStore.domain.ShopAddress;
+import com.javatest.RetailStore.domain.StoreLocation;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Component
 public class LocationInfoClient {
 
+	@Autowired
 	private RestTemplate restTemplate;
 
-	@Autowired
-	public LocationInfoClient(RestTemplate restTemplate) {
+	private String codeApiUrl;
+
+	
+	public LocationInfoClient(RestTemplate restTemplate, @Value("${url.codeapi}") String codeApiUrl) {
 		this.restTemplate = restTemplate;
+		this.codeApiUrl = codeApiUrl;
 	}
 
-	public MapGeoCodeResponse getResponseFromMaps() {
-
-		log.info("Entering getResponseFromMaps");
+	public MapGeoCodeResponse getResponseFromMaps(StoreLocation storeLocation) {
 		ResponseEntity<MapGeoCodeResponse> response = null;
-		try {
-			String url = "http://maps.googleapis.com/maps/api/geocode/json?address="
-					+ "Sayaji Hotel, Near balewadi stadium, pune" + "&sensor=true";
+			ShopAddress shopAddress = storeLocation.getShopAddress();
+			String url = codeApiUrl + storeLocation.getShopName() + " " + shopAddress.getNumber() + " "
+					+ shopAddress.getPostalCode() + "&sensor=true";
 			response = restTemplate.getForEntity(url, MapGeoCodeResponse.class);
-			log.info("Exiting getResponseFromMaps");
-		} catch (Exception e) {
-			log.info(e.getMessage());
-		}
 		return response.getBody();
 
 	}

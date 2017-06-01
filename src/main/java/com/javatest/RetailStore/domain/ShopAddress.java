@@ -7,7 +7,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class location{
-    private Double lat ;
-    private Double lng ;
+public class ShopAddress{
+    private int number;
+    private int postalCode;
 }
